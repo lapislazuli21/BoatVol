@@ -17,3 +17,6 @@ A lightweight Windows CLI tool that **remembers and restores volume levels** for
    git clone https://github.com/YOUR_USERNAME/BoatVol.git
    cd BoatVol
    cargo build --release
+
+#### Optional: Add to Windows Startup
+Press Win+R, type shell:startup, and create a shortcut to boatvol.exe.
