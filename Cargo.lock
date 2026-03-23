@@ -65,6 +65,7 @@ dependencies = [
 name = "boatvol"
 version = "0.1.0"
 dependencies = [
+ "dirs",
  "serde",
  "serde_json",
  "tray-icon",

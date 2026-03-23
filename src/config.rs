@@ -10,8 +10,13 @@ pub struct AppConfig {
 
 impl AppConfig {
     fn get_config_path() -> PathBuf {
-        let mut path = std::env::current_exe().expect("Failed to get current executable path");
-        path.pop();
+        let mut path = dirs::config_dir().expect("Could not find AppData directory");
+        path.push("BoatVol");
+
+        if !path.exists() {
+            std::fs::create_dir_all(&path).expect("Failed to create AppData/BoatVol directory");
+        }
+
         path.push("config.json");
         path
     }
