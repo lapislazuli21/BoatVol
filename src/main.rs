@@ -1,5 +1,8 @@
+#![windows_subsystem = "windows"]
+
 mod audio;
 mod config;
+mod tray;
 
 use std::sync::{Arc, Mutex};
 use windows::Win32::Media::Audio::IMMNotificationClient;
@@ -19,10 +22,7 @@ fn main() -> windows::core::Result<()> {
     let device_change_cb: IMMNotificationClient = device_change_cb.into();
     audio::register_device_change_callback(&enumerator, &device_change_cb)?;
 
-    println!(
-        "BoatVol running (save-on-change: {}). Press Ctrl+C to stop.",
-        save_on_change
-    );
-    std::thread::park();
+    // Run the system tray (blocks until the user clicks Quit)
+    tray::run();
     Ok(())
 }
