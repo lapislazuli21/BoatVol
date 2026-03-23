@@ -11,10 +11,14 @@ A lightweight Windows CLI tool that **remembers and restores volume levels** for
 
 ## Installation
 
+Download the latest release from the [Releases page](https://github.com/lapislazuli21/BoatVol/releases).
+
+## Alternative
+
 1. Install [Rust](https://rustup.rs/)
 2. Clone and build:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/BoatVol.git
+   git clone https://github.com/lapislazuli21/BoatVol.git
    cd BoatVol
    cargo build --release
 
