@@ -7,7 +7,6 @@ A lightweight Windows CLI tool that **remembers and restores volume levels** for
 - 🔊 Automatically restores volume when switching audio devices
 - 🦷 Works great with Bluetooth headphones that reset to 100% on connect
 - 💾 Persistent per-device volume storage in `config.json`
-- ⚡ Tiny footprint (~300 KB release binary)
 
 ## Installation
 
