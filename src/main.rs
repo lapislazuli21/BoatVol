@@ -23,6 +23,6 @@ fn main() -> windows::core::Result<()> {
     audio::register_device_change_callback(&enumerator, &device_change_cb)?;
 
     // Run the system tray (blocks until the user clicks Quit)
-    tray::run();
+    tray::run(config);
     Ok(())
 }

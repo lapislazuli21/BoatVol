@@ -22,5 +22,10 @@ features = [
     "Win32_Media_Audio",
     "Win32_System_Com_StructuredStorage",
     "Win32_System_Variant",
-    "Win32_UI_WindowsAndMessaging"
+    "Win32_UI_WindowsAndMessaging",
+    "Win32_System_Registry"
 ]
+
+[build-dependencies]
+winres = "0.1"
+

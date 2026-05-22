@@ -1,8 +1,11 @@
-use tray_icon::menu::{Menu, MenuEvent, MenuItem};
+use std::sync::{Arc, Mutex};
+use tray_icon::menu::{Menu, MenuEvent, MenuItem, CheckMenuItem, PredefinedMenuItem};
 use tray_icon::{Icon, TrayIconBuilder};
 use windows::Win32::UI::WindowsAndMessaging::{
     DispatchMessageW, GetMessageW, MSG, PostQuitMessage, TranslateMessage,
 };
+
+use crate::config;
 
 /// Generate a simple 32×32 RGBA icon (a blue-ish speaker/boat icon).
 fn create_icon() -> Icon {
@@ -69,11 +72,21 @@ fn create_icon() -> Icon {
 }
 
 /// Runs the system tray with a Win32 message loop. Blocks until the user clicks "Quit".
-pub fn run() {
+pub fn run(config: Arc<Mutex<config::AppConfig>>) {
+    let launch_on_startup_checked = {
+        let cfg = config.lock().unwrap();
+        cfg.launch_at_startup
+    };
+
+    let startup_item = CheckMenuItem::new("Launch at Startup", true, launch_on_startup_checked, None);
+    let startup_id = startup_item.id().clone();
+
     let quit_item = MenuItem::new("Quit", true, None);
     let quit_id = quit_item.id().clone();
 
     let menu = Menu::new();
+    menu.append(&startup_item).expect("Failed to add startup item");
+    menu.append(&PredefinedMenuItem::separator()).expect("Failed to add separator");
     menu.append(&quit_item).expect("Failed to add menu item");
 
     let _tray = TrayIconBuilder::new()
@@ -98,8 +111,15 @@ pub fn run() {
             if let Ok(event) = MenuEvent::receiver().try_recv() {
                 if event.id() == &quit_id {
                     PostQuitMessage(0);
+                } else if event.id() == &startup_id {
+                    let is_checked = startup_item.is_checked();
+                    let mut cfg = config.lock().unwrap();
+                    cfg.launch_at_startup = is_checked;
+                    cfg.save();
+                    let _ = config::update_startup(is_checked);
                 }
             }
         }
     }
 }
+
